@@ -4,15 +4,16 @@ const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 var router = express.Router();
 const User = require('../models/User');
+require('dotenv/config');
 
 const myOAuth2Client = new OAuth2(
-    "345577953309-2i0lqc2crq150vh5ugjo7s0mkashrgar.apps.googleusercontent.com",
-    "7I7dJKUJOGktPbnGYPmYrESZ",
+    process.env.CLIENTID,
+    process.env.CLIENTSECRET,
     "https://developers.google.com/oauthplayground"
 )
 
 myOAuth2Client.setCredentials({
-    refresh_token:"1//04lLqoaKNqbm-CgYIARAAGAQSNwF-L9IrKreduxyWhopVJJCP8QA6lQVFpWqLOMPP_ID5-TCxKMfx7praTr0LCENQbE48ZsdxD_o"
+    refresh_token: process.env.REFRESHTOKEN
 });
 
 const myAccessToken = myOAuth2Client.getAccessToken()
@@ -22,14 +23,13 @@ const transport = nodemailer.createTransport({
     auth: {
          type: "OAuth2",
          user: "postapp.informationservice@gmail.com", 
-         clientId: "345577953309-2i0lqc2crq150vh5ugjo7s0mkashrgar.apps.googleusercontent.com",
-         clientSecret: "7I7dJKUJOGktPbnGYPmYrESZ",
-         refreshToken: "1//04lLqoaKNqbm-CgYIARAAGAQSNwF-L9IrKreduxyWhopVJJCP8QA6lQVFpWqLOMPP_ID5-TCxKMfx7praTr0LCENQbE48ZsdxD_o",
+         clientId: process.env.CLIENTID,
+         clientSecret: process.env.CLIENTSECRET,
+         refreshToken: process.env.REFRESHTOKEN,
          accessToken: myAccessToken 
     }});
 
 router.post('/sendemail',function(req,res){
-    var users = []
     User.find({}, function(err, result) {
         if (err) {
           console.log(err);
