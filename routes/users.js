@@ -74,7 +74,7 @@ router.post('/register', (req, res) => {
   }else {
     const today = new Date();
     const { firstName, lastName, email, password, repeatPassword } = req.body;
-    const userData = { firstName, lastName, email, password, repeatPassword, created: today, role: "admin" }
+    const userData = { firstName, lastName, email, password, repeatPassword, created: today }
 
     User.findOne({
       email: req.body.email
