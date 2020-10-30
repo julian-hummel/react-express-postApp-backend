@@ -17,7 +17,6 @@ require('dotenv/config');
 
 var app = express();
 var mongoose = require('mongoose');
-const { runInNewContext } = require('vm');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
