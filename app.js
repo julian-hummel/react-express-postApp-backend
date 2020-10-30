@@ -8,6 +8,7 @@ var cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postsRouter = require('./routes/posts')
+var emailsRouter = require('./routes/emails')
 
 var bodyParser = require('body-parser');
 
@@ -32,6 +33,7 @@ app.use(bodyParser.json());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
+app.use('/emails', emailsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
