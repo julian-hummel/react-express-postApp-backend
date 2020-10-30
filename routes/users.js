@@ -154,4 +154,9 @@ router.get('/validateToken', (req, res) => {
   }
 })
 
+router.put('/update', (req, res) => {
+  console.log(req.body.notification)
+  req.send({ message: "dfdf0" })
+})
+
 module.exports = router;
