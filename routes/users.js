@@ -158,6 +158,9 @@ router.put('/update', (req, res) => {
   const filter = { email: req.body.user.email }
   const update = { notification: req.body.user.notification }
 
+  console.log(filter)
+  console.log(update)
+
   User.findOneAndUpdate(filter, update)
   .then(user => {
     res.send(user)
