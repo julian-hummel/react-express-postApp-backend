@@ -155,8 +155,16 @@ router.get('/validateToken', (req, res) => {
 })
 
 router.put('/update', (req, res) => {
-  console.log(req.body.user)
-  res.send({ message: "dfdf0" })
+  const filter = { email: req.body.user.email }
+  const update = { notification: req.body.user.notification }
+
+  User.findOneAndUpdate(filter, update)
+  .then(user => {
+    res.send(user)
+  })
+  .catch(err => {
+    res.send('error ' + err)
+  })
 })
 
 module.exports = router;
