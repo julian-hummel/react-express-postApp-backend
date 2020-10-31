@@ -154,8 +154,8 @@ router.get('/validateToken', (req, res) => {
   }
 })
 
-router.put('/update', (req, res) => {
-  User.updateOne({ email: req.body.user.email }, { $set: { notification: req.body.user.notification } })
+router.put('/update/:email/:notification', (req, res) => {
+  User.updateOne({ email: req.params.email }, { $set: { notification: req.params.notification } })
   .then(() => {
     res.send({ message: "User notification status updated" })
   })
