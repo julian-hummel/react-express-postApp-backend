@@ -155,18 +155,12 @@ router.get('/validateToken', (req, res) => {
 })
 
 router.put('/update', (req, res) => {
-  const filter = { email: req.body.user.email }
-  const update = { notification: req.body.user.notification }
-
-  console.log(filter)
-  console.log(update)
-
-  User.findOneAndUpdate(filter, update)
-  .then(user => {
-    res.send(user)
+  User.updateOne({ email: req.body.user.email }, { $set: { notification: req.body.user.notification } })
+  .then(() => {
+    res.send({ message: "User notification status updated" })
   })
   .catch(err => {
-    res.send('error ' + err)
+    res.send({ 'error: ': err })
   })
 })
 

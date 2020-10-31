@@ -35,7 +35,7 @@ router.post('/sendemail',function(req,res){
           console.log(err);
         } else {
             result.map(user => {
-                if(user.email !== req.body.email) {
+                if(user.email !== req.body.email && user.notification) {
                     const mailOptions = {
                         from: 'postapp.informationservice@gmail.com', 
                         to: user.email, 
