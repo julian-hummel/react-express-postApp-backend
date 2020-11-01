@@ -4,6 +4,8 @@ const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 var router = express.Router();
 const User = require('../models/User');
+const Post = require('../models/Post');
+
 require('dotenv/config');
 
 const myOAuth2Client = new OAuth2(
@@ -32,7 +34,7 @@ const transport = nodemailer.createTransport({
 router.post('/sendemail',function(req,res){
     User.find({}, function(err, result) {
         if (err) {
-          console.log(err);
+          res.send({ 'error: ': err })
         } else {
             result.map(user => {
                 if(user.email !== req.body.email && user.notification) {
@@ -54,6 +56,36 @@ router.post('/sendemail',function(req,res){
             })
         }
     });  
+})
+
+router.post(('/commentNotification'), (req, res) => {
+    Post.findOne({ postId: req.body.post }, function(err, post) {
+        if(err) {
+            res.send({ 'error: ': err })
+        }else {
+            User.findOne({ firstName: post.creatorName.split(' ')[0], lastName: post.creatorName.split(' ')[1] }, function(err, user) {
+                if(err) {
+                    res.send({ 'error: ': err })
+                }
+                if(user.notification) {
+                    const mailOptions = {
+                        from: 'postapp.informationservice@gmail.com', 
+                        to: user.email, 
+                        subject: req.body.creator + " hat einen deiner Posts kommentiert",
+                        html: '<p>Hallo ' + user.firstName + ' ' + user.lastName + ', <br>' + req.body.creator + ' hat deinen Post ,,' + post.postHeader + '´´ kommentiert! <br> Grüße, <br> dein Post-App Service Team'
+                    } 
+                    transport.sendMail(mailOptions,function(err,result){
+                        if(err){
+                            res.send({ message:err })
+                        }else{
+                            transport.close();
+                            res.send({ message:'Email wurde erfolgreich gesendet.' })
+                        }
+                    })
+                }
+            })
+        }
+    })
 })
 
 module.exports = router
