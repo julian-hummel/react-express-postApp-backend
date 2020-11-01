@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 
 router.post(('/submit'), (req, res) => {
     const { postHeader, postContent, creatorName, postId } = req.body
@@ -13,6 +14,29 @@ router.post(('/submit'), (req, res) => {
         .catch(err => {
             res.send('error: ' + err);
         })
+})
+
+router.post(('/submitComment'), (req, res) => {
+    const { content, creator, post } = req.body
+    const comment = { content, creator, post }
+
+    Comment.create(comment)
+        .then(comment => {
+            res.json({ status: 'Kommentar von ' + comment.creator + ' veröffentlicht!'})
+        })
+        .catch(err => {
+            res.json({ 'error': err })
+        })
+})
+
+router.get(('/fetchComments/:postId'), (req, res) => {
+    Comment.find({ post: req.params.postId }, function(err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.json(result);
+        }
+    });
 })
 
 router.get(('/fetch'), (req, res) => {
