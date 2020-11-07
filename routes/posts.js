@@ -50,7 +50,6 @@ router.get(('/fetch'), (req, res) => {
 })
 
 router.delete(('/delete/:id'), (req, res) => {
-    console.log(req.params.id)
     Post.findOne({
         _id: req.params.id
     })
@@ -64,6 +63,24 @@ router.delete(('/delete/:id'), (req, res) => {
             })
         }else {
             res.send({ error: "Post konnte nicht gelöscht werden" })
+        }
+    })
+})
+
+router.delete(('/deleteComment/:id'), (req, res) => {
+    Comment.findOne({
+        _id: req.params.id
+    })
+    .then(comment => {
+        if(comment) {
+            Comment.deleteOne({
+                _id: req.params.id
+            })
+            .then(() => {
+                res.send({ message: "Der Kommentar wurde erfolgreich gelöscht!" })
+            })
+        }else {
+            res.send({ error: "Kommentar konnte nicht gelöscht werden" })
         }
     })
 })
