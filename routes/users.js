@@ -164,4 +164,14 @@ router.put('/update/:email/:notification', (req, res) => {
   })
 })
 
+router.put('/updateUser/:firstName/:lastName/:email', (req, res) => {
+  User.updateOne({ email: req.params.email }, { $set: { firstName: req.params.firstName, lastName: req.params.lastName } })
+  .then(() => {
+    res.send({ message: "User name updated" })
+  })
+  .catch(err => {
+    res.send({ 'error: ': err })
+  })
+})
+
 module.exports = router;
